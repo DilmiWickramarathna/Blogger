@@ -1,27 +1,28 @@
 package com.springproject.blogger.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 //LamBok for getters, setters and constructors
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Author {
+public class BlogUser {
     @Id //To define primary key
     @GeneratedValue(strategy = GenerationType.IDENTITY) //To auto generate the id val
-    @JsonProperty("AuthorID")
-    private int AuthorID;
+    @JsonProperty("BlogUserID")
+    private int BlogUserID;
 
-    @JsonProperty("AuthorName")
-    private String AuthorName;
+    @JsonProperty("BlogUserName")
+    private String BlogUserName;
 
     @JsonProperty("Role")
     private String Role;
@@ -31,4 +32,9 @@ public class Author {
 
     @JsonProperty("Password")
     private String Password;
+
+    @CreationTimestamp
+    @Column(updatable = false)
+    @JsonProperty("RegistrationDateTime")
+    private LocalDateTime RegistrationDateTime;
 }

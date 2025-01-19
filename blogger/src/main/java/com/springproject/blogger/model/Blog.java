@@ -1,5 +1,6 @@
 package com.springproject.blogger.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Entity
 //LamBok for getters, setters and constructors
@@ -26,8 +28,8 @@ public class Blog {
     @JsonProperty("BlogName")
     private String BlogName;
 
-    @JsonProperty("AuthorID")
-    private String AuthorID;
+    @JsonProperty("BlogUserID")
+    private String BlogUserID;
 
     @JsonProperty("Category")
     private String Category;
@@ -35,11 +37,13 @@ public class Blog {
     @JsonProperty("Description")
     private String Description;
 
-    @JsonProperty("CreatedDate")
-    private Date CreatedDate;
+    @JsonProperty("CreatedDateTime")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy", timezone = "UTC")
+    private LocalDateTime CreatedDateTime;
 
-    @JsonProperty("LastUpdated")
-    private Date LastUpdated;
+    @JsonProperty("LastUpdatedTime")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy", timezone = "UTC")
+    private LocalDateTime LastUpdatedTime;
 
 }
 
