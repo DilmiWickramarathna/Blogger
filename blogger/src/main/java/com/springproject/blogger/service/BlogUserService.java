@@ -2,7 +2,6 @@ package com.springproject.blogger.service;
 
 import com.springproject.blogger.model.BlogUser;
 import com.springproject.blogger.repository.BlogUserRepository;
-import org.hibernate.StaleObjectStateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,7 +16,7 @@ import java.util.Optional;
 public class BlogUserService implements UserDetailsService {
 
     @Autowired
-    private BlogUserRepository blogUserRepo;
+    private final BlogUserRepository blogUserRepo;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -30,27 +29,24 @@ public class BlogUserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<BlogUser> user = blogUserRepo.findByUsername(username);
-
-        if (user.isPresent()) {
-            var userObj = user.get();
-            return User.builder()
-                    .username(userObj.getUsername())
-                    .password(passwordEncoder.encode(userObj.getPassword())) // Add {noop} prefix for plain-text password
-                    .roles(userObj.getRole()) // Assign a default role
-                    .build();
-        } else {
-            throw new UsernameNotFoundException(username);
-        }
+        Optional<BlogUser> userNew = blogUserRepo.findByUsername(username);
+        return blogUserRepo.findByUsername(username)
+                .map(user -> User.builder()
+                        .username(user.getUsername())
+                        .password(user.getPassword())
+                        .roles(user.getRole()) // Assign a default role
+                        .build())
+                .orElseThrow(() -> new UsernameNotFoundException(username));
     }
 
-    public void addNewBlogUser(BlogUser blogUser) {
-        try {
-            blogUser.setPassword(passwordEncoder.encode(blogUser.getPassword()));
+    public boolean addNewBlogUser(BlogUser blogUser) {
+        Optional<BlogUser> user = blogUserRepo.findByUsername(blogUser.getUsername());
+        if (!user.isPresent()) {
+            blogUser.setPassword(blogUser.getPassword());
             blogUserRepo.save(blogUser);
-        } catch (StaleObjectStateException e) {
-            System.out.println("Conflict detected: " + e.getMessage());
+            return true;
         }
+        return false;
     }
 
     public BlogUser getBlogUserByID(int id) {

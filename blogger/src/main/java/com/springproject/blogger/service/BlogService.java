@@ -27,7 +27,6 @@ public class BlogService {
         try {
             blogRepo.save(blog);
         } catch (StaleObjectStateException e) {
-            // Handle conflict, e.g., refresh the entity or retry
             System.out.println("Conflict detected: " + e.getMessage());
         }
     }
