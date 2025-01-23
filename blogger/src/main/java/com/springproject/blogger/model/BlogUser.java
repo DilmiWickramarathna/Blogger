@@ -1,6 +1,5 @@
 package com.springproject.blogger.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -21,15 +20,19 @@ public class BlogUser {
     @JsonProperty("BlogUserID")
     private int BlogUserID;
 
-    @JsonProperty("BlogUserName")
-    private String BlogUserName;
+    @Column(nullable = false)
+    @JsonProperty("username")
+    private String username;
 
+    @Column(nullable = false)
     @JsonProperty("Role")
     private String Role;
 
+    @Column(nullable = false)
     @JsonProperty("Email")
     private String Email;
 
+    @Column(nullable = false)
     @JsonProperty("Password")
     private String Password;
 
@@ -37,4 +40,52 @@ public class BlogUser {
     @Column(updatable = false)
     @JsonProperty("RegistrationDateTime")
     private LocalDateTime RegistrationDateTime;
+
+    public void setBlogUserID(int blogUserID) {
+        BlogUserID = blogUserID;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setRole(String role) {
+        Role = role;
+    }
+
+    public void setEmail(String email) {
+        Email = email;
+    }
+
+    public void setPassword(String password) {
+        Password = password;
+    }
+
+    public void setRegistrationDateTime(LocalDateTime registrationDateTime) {
+        RegistrationDateTime = registrationDateTime;
+    }
+
+    public int getBlogUserID() {
+        return BlogUserID;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getRole() {
+        return Role;
+    }
+
+    public String getEmail() {
+        return Email;
+    }
+
+    public String getPassword() {
+        return Password;
+    }
+
+    public LocalDateTime getRegistrationDateTime() {
+        return RegistrationDateTime;
+    }
 }

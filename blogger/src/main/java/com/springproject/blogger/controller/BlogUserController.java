@@ -3,31 +3,28 @@ package com.springproject.blogger.controller;
 import com.springproject.blogger.model.BlogUser;
 import com.springproject.blogger.service.BlogUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin //Fix CORS errors
-@RequestMapping("/blogger")
+@RequestMapping("/user")
 public class BlogUserController {
     @Autowired
-    private BlogUserService service;
+    private BlogUserService blogUserService;
 
-    @PostMapping("/user/register")
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    public BlogUserController(BlogUserService userService, PasswordEncoder passwordEncoder) {
+        this.blogUserService = userService;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    @PostMapping("/signup")
     public void addBlogUser(@RequestBody BlogUser blogUser)
     {
-        service.addNewBlogUser(blogUser);
+        blogUserService.addNewBlogUser(blogUser);
     }
 
-    @GetMapping("/user/{id}")
-    public ResponseEntity<BlogUser> getBlogUserByID(@PathVariable int id){
-
-        BlogUser blogUser = service.getBlogUserByID(id);
-
-        if(blogUser != null)
-            return new ResponseEntity<>(blogUser, HttpStatus.OK);
-        else
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
 }
