@@ -17,32 +17,32 @@ import org.hibernate.annotations.CreationTimestamp;
 public class BlogUser {
     @Id //To define primary key
     @GeneratedValue(strategy = GenerationType.IDENTITY) //To auto generate the id val
-    @JsonProperty("BlogUserID")
-    private int BlogUserID;
+    @JsonProperty("blogUserID")
+    private int blogUserID;
 
     @Column(nullable = false)
     @JsonProperty("username")
     private String username;
 
     @Column(nullable = false)
-    @JsonProperty("Role")
-    private String Role;
+    @JsonProperty("role")
+    private String role;
 
     @Column(nullable = false)
-    @JsonProperty("Email")
-    private String Email;
+    @JsonProperty("email")
+    private String email;
 
     @Column(nullable = false)
-    @JsonProperty("Password")
-    private String Password;
+    @JsonProperty("password")
+    private String password;
 
     @CreationTimestamp
     @Column(updatable = false)
-    @JsonProperty("RegistrationDateTime")
-    private LocalDateTime RegistrationDateTime;
+    @JsonProperty("registrationDateTime")
+    private LocalDateTime registrationDateTime;
 
     public void setBlogUserID(int blogUserID) {
-        BlogUserID = blogUserID;
+        this.blogUserID = blogUserID;
     }
 
     public void setUsername(String username) {
@@ -50,23 +50,23 @@ public class BlogUser {
     }
 
     public void setRole(String role) {
-        Role = role;
+        this.role = role;
     }
 
     public void setEmail(String email) {
-        Email = email;
+        this.email = email;
     }
 
     public void setPassword(String password) {
-        Password = password;
+        this.password = password;
     }
 
     public void setRegistrationDateTime(LocalDateTime registrationDateTime) {
-        RegistrationDateTime = registrationDateTime;
+        this.registrationDateTime = registrationDateTime;
     }
 
     public int getBlogUserID() {
-        return BlogUserID;
+        return blogUserID;
     }
 
     public String getUsername() {
@@ -74,18 +74,18 @@ public class BlogUser {
     }
 
     public String getRole() {
-        return Role;
+        return role;
     }
 
     public String getEmail() {
-        return Email;
+        return email;
     }
 
     public String getPassword() {
-        return Password;
+        return password;
     }
 
     public LocalDateTime getRegistrationDateTime() {
-        return RegistrationDateTime;
+        return registrationDateTime;
     }
 }

@@ -22,26 +22,26 @@ public class Blog {
 
     @Id //To define primary key
     @GeneratedValue(strategy = GenerationType.IDENTITY) //To auto generate the id val
-    @JsonProperty("ID")
+    @JsonProperty("id")
     private int ID;
 
-    @JsonProperty("BlogName")
+    @JsonProperty("blogName")
     private String BlogName;
 
-    @JsonProperty("BlogUserID")
+    @JsonProperty("blogUserID")
     private String BlogUserID;
 
-    @JsonProperty("Category")
+    @JsonProperty("category")
     private String Category;
 
-    @JsonProperty("Description")
+    @JsonProperty("description")
     private String Description;
 
-    @JsonProperty("CreatedDateTime")
+    @JsonProperty("createdDateTime")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy", timezone = "UTC")
     private LocalDateTime CreatedDateTime;
 
-    @JsonProperty("LastUpdatedTime")
+    @JsonProperty("lastUpdatedTime")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy", timezone = "UTC")
     private LocalDateTime LastUpdatedTime;
 
