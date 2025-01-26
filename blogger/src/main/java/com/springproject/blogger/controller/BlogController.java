@@ -23,7 +23,6 @@ public class BlogController {
 
     @GetMapping("/blog/{id}")
     public ResponseEntity<Blog> getBlogByISBN(@PathVariable int id){
-
         Blog blog = blogService.getBlogByID(id);
 
         if(blog != null)

@@ -3,6 +3,8 @@ package com.springproject.blogger.service;
 import com.springproject.blogger.model.BlogUser;
 import com.springproject.blogger.repository.BlogUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -46,7 +48,7 @@ public class BlogUserService implements UserDetailsService {
     public boolean addNewBlogUser(BlogUser blogUser) {
         Optional<BlogUser> user = blogUserRepo.findByUsername(blogUser.getUsername());
         if (!user.isPresent()) {
-            blogUser.setPassword(blogUser.getPassword());
+            blogUser.setPassword(passwordEncoder.encode(blogUser.getPassword()));
             blogUserRepo.save(blogUser);
             return true;
         }
@@ -86,10 +88,21 @@ public class BlogUserService implements UserDetailsService {
         return userList;
     }
 
-    public void deleteBlog(int blogUserID) {
-        Optional<BlogUser> myprofile = getMyProfileDetails();
-        if(Objects.equals(((Optional<BlogUser>)myprofile).get().getRole(), "ADMIN")){
-            blogUserRepo.deleteById(blogUserID);
+    public int deleteBlog(int blogUserID) {
+        BlogUser userToDelete = getBlogUserByID(blogUserID);
+        Optional<BlogUser> myProfile = getMyProfileDetails();
+        if((!myProfile.isEmpty()) && ((Objects.equals(myProfile.get().getRole(), "ADMIN")) || (myProfile.get().getBlogUserID() == blogUserID))){
+            if(userToDelete != null)
+            {
+                blogUserRepo.deleteById(blogUserID);
+                return 1;
+            }
+            else
+            {
+                return 2;
+            }
+        }else{
+            return 3;
         }
     }
 }
