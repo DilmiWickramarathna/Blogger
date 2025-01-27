@@ -2,10 +2,9 @@ package com.springproject.blogger.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,29 +22,42 @@ public class Blog {
 
     @Id //To define primary key
     @GeneratedValue(strategy = GenerationType.IDENTITY) //To auto generate the id val
+    @Column(nullable = false)
     @JsonProperty("id")
     private int ID;
 
+    @NotNull(message = "Blog Name is a mandatory field!")
+    @NotEmpty(message = "Blog Name is a mandatory field!")
+    @Column(nullable = false)
     @JsonProperty("blogName")
     private String blogName;
 
+    @Column(nullable = false)
     @JsonProperty("blogUserID")
     private int blogUserID;
 
+    @NotNull(message = "Category is a mandatory field!")
+    @NotEmpty(message = "Category is a mandatory field!")
+    @Column(nullable = false)
     @JsonProperty("category")
     private String category;
 
+    @NotNull(message = "Description is a mandatory field!")
+    @NotEmpty(message = "Description is a mandatory field!")
+    @Column(nullable = false)
     @JsonProperty("description")
     private String description;
 
     @JsonProperty("createdDateTime")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy:HH:mm:ss", timezone = "UTC")
     @CreationTimestamp
+    @Column(nullable = false)
     private LocalDateTime createdDateTime;
 
     @JsonProperty("lastUpdatedTime")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy", timezone = "UTC")
     @UpdateTimestamp
+    @Column(nullable = false)
     private LocalDateTime lastUpdatedTime;
 
     public void setID(int ID) {

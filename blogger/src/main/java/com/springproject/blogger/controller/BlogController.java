@@ -1,7 +1,7 @@
 package com.springproject.blogger.controller;
 
 import com.springproject.blogger.model.Blog;
-import com.springproject.blogger.service.BlogService;
+import com.springproject.blogger.service.impl.BlogServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,64 +14,42 @@ import java.util.List;
 @RequestMapping("/blogportal")
 public class BlogController {
     @Autowired
-    private BlogService blogService;
+    private BlogServiceImpl blogService;
 
     @GetMapping("/blogs")
     public ResponseEntity<List<Blog>> getAllBlogs() {
-        return new ResponseEntity<>(blogService.getAllBlogs(), HttpStatus.OK);
+        List<Blog> blogs = blogService.getAllBlogs();
+        if(!blogs.isEmpty())
+            return new ResponseEntity<>(blogs, HttpStatus.OK);
+        else
+            return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/blog/{id}")
     public ResponseEntity<Blog> getBlogByISBN(@PathVariable int id){
         Blog blog = blogService.getBlogByID(id);
-
-        if(blog != null)
-            return new ResponseEntity<>(blog,HttpStatus.OK);
-        else
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<Blog>(blog,HttpStatus.OK);
     }
 
     @PostMapping("/blog")
     public ResponseEntity<String> addBlog(@RequestBody Blog blog)
     {
-        int blogCreation;
-        blogCreation = blogService.addNewBlog(blog);
-
-        if(blogCreation == 1){
-            return new ResponseEntity<String>("Blog added successfully!",HttpStatus.OK);
-        }else if(blogCreation == 2){
-            return new ResponseEntity<String>("You don't have permission to create blogs!",HttpStatus.BAD_REQUEST);
-        }else{
-            return new ResponseEntity<String>("Conflict detected when adding the blog!",HttpStatus.BAD_REQUEST);
-        }
+        blogService.addNewBlog(blog);
+        return new ResponseEntity<String>("Blog added successfully!",HttpStatus.OK);
     }
 
     @PutMapping("/blog")
     public ResponseEntity<String> updateBlog(@RequestBody Blog blog)
     {
-        int success = 0;
-        success = blogService.updateBlogDetails(blog);
-        if(success == 1){
-            return new ResponseEntity<>("Updated the blog!", HttpStatus.OK);
-        }else if(success == 2) {
-            return new ResponseEntity<>("You don't have permission to update the blog!",HttpStatus.BAD_REQUEST);
-        }else{
-            return new ResponseEntity<>("This blog don't exists!",HttpStatus.BAD_REQUEST);
-        }
-
+        blogService.updateBlogDetails(blog);
+        return new ResponseEntity<>("Updated the blog successfully!", HttpStatus.OK);
     }
 
     @DeleteMapping ("/blog/{id}")
     public ResponseEntity<String> deleteBlog(@PathVariable int id)
     {
-        int success = 0;
-        success = blogService.deleteBlog(id);
-        if(success == 1)
-            return new ResponseEntity<>("Blog Deleted", HttpStatus.OK);
-        else if(success == 2)
-            return new ResponseEntity<>("You don't have permission to delete the blog!",HttpStatus.BAD_REQUEST);
-        else
-            return new ResponseEntity<>("This blog don't exists!",HttpStatus.BAD_REQUEST);
+        blogService.deleteBlog(id);
+        return new ResponseEntity<>("Blog deleted successfully!", HttpStatus.OK);
     }
 
     @GetMapping("/blogs/search")

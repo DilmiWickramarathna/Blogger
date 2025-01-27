@@ -2,12 +2,15 @@ package com.springproject.blogger.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.validator.constraints.Email;
 
 @Entity
 //LamBok for getters, setters and constructors
@@ -17,27 +20,37 @@ import org.hibernate.annotations.CreationTimestamp;
 public class BlogUser {
     @Id //To define primary key
     @GeneratedValue(strategy = GenerationType.IDENTITY) //To auto generate the id val
+    @Column(nullable = false)
     @JsonProperty("blogUserID")
     private int blogUserID;
 
+    @NotNull(message = "User Name is a mandatory field!")
+    @NotEmpty(message = "User Name is a mandatory field!")
     @Column(nullable = false)
     @JsonProperty("username")
     private String username;
 
+    @NotNull(message = "User Role is a mandatory field!")
+    @NotEmpty(message = "User Role is a mandatory field!")
     @Column(nullable = false)
     @JsonProperty("role")
     private String role;
 
+    @NotNull(message = "Email is a mandatory field!")
+    @NotEmpty(message = "Email is a mandatory field!")
     @Column(nullable = false)
+    @Email(message = "Invalid email format")
     @JsonProperty("email")
     private String email;
 
+    @NotNull(message = "Password is a mandatory field!")
+    @NotEmpty(message = "Password is a mandatory field!")
     @Column(nullable = false)
     @JsonProperty("password")
     private String password;
 
     @CreationTimestamp
-    @Column(updatable = false)
+    @Column(updatable = false, nullable = false)
     @JsonProperty("registrationDateTime")
     private LocalDateTime registrationDateTime;
 

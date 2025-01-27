@@ -1,6 +1,6 @@
 package com.springproject.blogger.configuration;
 
-import com.springproject.blogger.service.BlogUserService;
+import com.springproject.blogger.service.impl.BlogUserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +20,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Autowired
-    private BlogUserService blogUserService;
+    private BlogUserServiceImpl blogUserService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -44,7 +44,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(registry -> registry
-                        .requestMatchers("user/signup","user/login").permitAll() // Allow access without authentication
+                        .requestMatchers("blogportal/signup","blogportal/login").permitAll() // Allow access without authentication
                         .anyRequest().authenticated())        // All other requests require authentication
                 .sessionManagement(session -> session                        // Configure session management
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))

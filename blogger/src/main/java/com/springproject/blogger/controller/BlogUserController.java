@@ -1,7 +1,8 @@
 package com.springproject.blogger.controller;
 
 import com.springproject.blogger.model.BlogUser;
-import com.springproject.blogger.service.BlogUserService;
+import com.springproject.blogger.service.impl.BlogUserServiceImpl;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,30 +17,21 @@ import java.util.Optional;
 @RequestMapping("/blogportal")
 public class BlogUserController {
     @Autowired
-    private final BlogUserService blogUserService;
+    private final BlogUserServiceImpl blogUserService;
 
     @Autowired
     private final PasswordEncoder passwordEncoder;
 
-    public BlogUserController(BlogUserService userService, PasswordEncoder passwordEncoder) {
+    public BlogUserController(BlogUserServiceImpl userService, PasswordEncoder passwordEncoder) {
         this.blogUserService = userService;
         this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<String> addBlogUser(@RequestBody BlogUser blogUser)
+    public ResponseEntity<String> addBlogUser(@RequestBody @Valid BlogUser blogUser)
     {
-        boolean successSignup = false;
-        successSignup = blogUserService.addNewBlogUser(blogUser);
-
-        if(successSignup)
-        {
-            return new ResponseEntity<>("New User Added!", HttpStatus.OK);
-        }
-        else
-        {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        blogUserService.addNewBlogUser(blogUser);
+        return new ResponseEntity<>("New User Added!", HttpStatus.OK);
     }
 
     @PostMapping("/login")
@@ -71,25 +63,17 @@ public class BlogUserController {
 
     @DeleteMapping("/deleteuser/{blogUserID}")
     public ResponseEntity<String> deleteBlogUser(@PathVariable int blogUserID) {
-        int deletionResult = blogUserService.deleteBlog(blogUserID);
-        if(deletionResult == 1) {
-            return new ResponseEntity<>("User Deleted Successfully!", HttpStatus.OK);
-        }else if(deletionResult == 2){
-            return new ResponseEntity<>("This user doesn't exists!", HttpStatus.BAD_REQUEST);
-        }else{
-            return new ResponseEntity<>("You don't have authority to delete this user!",HttpStatus.BAD_REQUEST);
-        }
+        blogUserService.deleteBlog(blogUserID);
+        return new ResponseEntity<>("User Deleted Successfully!", HttpStatus.OK);
     }
 
-    @GetMapping("/{blogUserID}")
+    @GetMapping("bloguser/{blogUserID}")
     public ResponseEntity<BlogUser> getBlogUserDetailsByID(@PathVariable int blogUserID){
         BlogUser userDetails = blogUserService.getBlogUserByID(blogUserID);
-        if(userDetails != null)
-        {
+        if(userDetails != null) {
             return new ResponseEntity<>(userDetails, HttpStatus.OK);
         }
-        else
-        {
+        else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
