@@ -40,7 +40,7 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public void addNewBlog(Blog blog) {
         Optional<BlogUser> myprofile = blogUserService.getMyProfileDetails();
-        if(Objects.equals(myprofile.get().getRole(), "AUTHOR")){
+        if(Objects.equals(myprofile.get().getRole(), "AUTHOR")){ //Only AUTHOR can publish the blogs
             blog.setBlogUserID(myprofile.get().getBlogUserID());
             blogRepo.save(blog);
         }else{
@@ -56,7 +56,7 @@ public class BlogServiceImpl implements BlogService {
             Optional<BlogUser> myprofile = blogUserService.getMyProfileDetails();
             if(myprofile.isPresent()){
                 Blog existingBlog = optBlog.get();
-                if(Objects.equals(myprofile.get().getBlogUserID(),existingBlog.getBlogUserID())) {
+                if(Objects.equals(myprofile.get().getBlogUserID(),existingBlog.getBlogUserID())) { //Only blog AUTHOR can update the blogs
                     existingBlog.setBlogName(blog.getBlogName());
                     existingBlog.setCategory(blog.getCategory());
                     existingBlog.setDescription(blog.getDescription());
@@ -80,7 +80,7 @@ public class BlogServiceImpl implements BlogService {
             if(myprofile.isPresent()) {
                 Blog existingBlog = optBlog.get();
                 if((Objects.equals(myprofile.get().getBlogUserID(),existingBlog.getBlogUserID()))
-                || (Objects.equals(myprofile.get().getRole(),"ADMIN") )){
+                || (Objects.equals(myprofile.get().getRole(),"ADMIN") )){ //Only blog AUTHOR or ADMIN can delete the blogs
                     blogRepo.deleteById(id);
                 }else {
                     throw new NoPermissionException("You don't have permission to delete this blog!");
@@ -94,6 +94,6 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public List<Blog> getBlogListBySearch(String keyword) {
-        return blogRepo.searchBlogs(keyword);
+        return blogRepo.searchBlogs(keyword); //Search blogs using blog name, category or description
     }
 }

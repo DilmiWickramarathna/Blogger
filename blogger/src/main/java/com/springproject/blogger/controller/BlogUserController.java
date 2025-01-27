@@ -63,7 +63,7 @@ public class BlogUserController {
 
     @DeleteMapping("/deleteuser/{blogUserID}") //Delete an existing user
     public ResponseEntity<String> deleteBlogUser(@PathVariable int blogUserID) {
-        blogUserService.deleteBlog(blogUserID);
+        blogUserService.deleteBlogUser(blogUserID);
         return new ResponseEntity<>("User Deleted Successfully!", HttpStatus.OK);
     }
 

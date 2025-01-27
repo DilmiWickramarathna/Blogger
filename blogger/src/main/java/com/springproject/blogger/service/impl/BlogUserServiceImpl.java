@@ -3,7 +3,6 @@ package com.springproject.blogger.service.impl;
 import com.springproject.blogger.exception.NoElementFoundException;
 import com.springproject.blogger.exception.NoPermissionException;
 import com.springproject.blogger.exception.RegistrationException;
-import com.springproject.blogger.model.Blog;
 import com.springproject.blogger.model.BlogUser;
 import com.springproject.blogger.repository.BlogUserRepository;
 import com.springproject.blogger.service.BlogUserService;
@@ -82,7 +81,7 @@ public class BlogUserServiceImpl implements UserDetailsService, BlogUserService 
     public List<BlogUser> getBlogUserList() {
         Optional<BlogUser> myprofile = getMyProfileDetails();
         List<BlogUser> userList = null;
-        if(Objects.equals(((Optional<BlogUser>)myprofile).get().getRole(), "ADMIN")){
+        if(Objects.equals(myprofile.get().getRole(), "ADMIN")){ //Only ADMIN can see the existing user details
                 userList = blogUserRepo.findAll();
                 return userList;
         }else{
@@ -90,10 +89,11 @@ public class BlogUserServiceImpl implements UserDetailsService, BlogUserService 
         }
     }
     @Override
-    public void deleteBlog(int blogUserID) {
+    public void deleteBlogUser(int blogUserID) {
         BlogUser userToDelete = getBlogUserByID(blogUserID);
         Optional<BlogUser> myProfile = getMyProfileDetails();
-        if((!myProfile.isEmpty()) && ((Objects.equals(myProfile.get().getRole(), "ADMIN")) || (myProfile.get().getBlogUserID() == blogUserID))){
+        if((!myProfile.isEmpty()) && ((Objects.equals(myProfile.get().getRole(), "ADMIN")) ||
+                (myProfile.get().getBlogUserID() == blogUserID))){ //Only ADMIN or user itself can delete the user profile
             if(userToDelete != null)
             {
                 blogUserRepo.deleteById(blogUserID);

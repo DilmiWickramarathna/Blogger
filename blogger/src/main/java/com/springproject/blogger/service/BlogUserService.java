@@ -12,5 +12,5 @@ public interface BlogUserService {
     BlogUser getBlogUserByID(int id);
     Optional<BlogUser> getMyProfileDetails();
     List<BlogUser> getBlogUserList();
-    void deleteBlog(int blogUserID);
+    void deleteBlogUser(int blogUserID);
 }
