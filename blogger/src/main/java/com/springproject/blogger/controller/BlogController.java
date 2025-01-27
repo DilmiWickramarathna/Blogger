@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin //Fix CORS errors
-@RequestMapping("/blogger")
+@RequestMapping("/blogportal")
 public class BlogController {
     @Autowired
     private BlogService blogService;

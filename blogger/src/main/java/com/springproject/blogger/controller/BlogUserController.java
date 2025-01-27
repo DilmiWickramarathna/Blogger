@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin //Fix CORS errors
-@RequestMapping("/user")
+@RequestMapping("/blogportal")
 public class BlogUserController {
     @Autowired
     private final BlogUserService blogUserService;
