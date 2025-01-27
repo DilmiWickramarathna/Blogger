@@ -84,7 +84,7 @@ public class BlogUserService implements UserDetailsService {
         List<BlogUser> userList = null;
         if(Objects.equals(((Optional<BlogUser>)myprofile).get().getRole(), "ADMIN")){
                 userList = blogUserRepo.findAll();
-            }
+        }
         return userList;
     }
 

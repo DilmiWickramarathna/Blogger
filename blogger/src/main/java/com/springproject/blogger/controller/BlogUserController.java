@@ -61,7 +61,12 @@ public class BlogUserController {
     @GetMapping("/blogusers")
     public ResponseEntity<List<BlogUser>> getAllUsers() {
         List<BlogUser> blogUserList = blogUserService.getBlogUserList();
-        return new ResponseEntity<>(blogUserList,HttpStatus.OK);
+        if(blogUserList != null){
+            return new ResponseEntity<>(blogUserList,HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(blogUserList,HttpStatus.BAD_REQUEST);
+        }
+
     }
 
     @DeleteMapping("/deleteuser/{blogUserID}")
