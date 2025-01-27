@@ -1,6 +1,7 @@
 package com.springproject.blogger.service;
 
 import com.springproject.blogger.model.BlogUser;
+import com.springproject.blogger.model.UserLogin;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
@@ -13,4 +14,5 @@ public interface BlogUserService {
     Optional<BlogUser> getMyProfileDetails();
     List<BlogUser> getBlogUserList();
     void deleteBlogUser(int blogUserID);
+    String verifyUserLogin(UserLogin userLogin);
 }

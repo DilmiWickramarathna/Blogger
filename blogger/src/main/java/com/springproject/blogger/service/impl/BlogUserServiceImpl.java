@@ -4,9 +4,14 @@ import com.springproject.blogger.exception.NoElementFoundException;
 import com.springproject.blogger.exception.NoPermissionException;
 import com.springproject.blogger.exception.RegistrationException;
 import com.springproject.blogger.model.BlogUser;
+import com.springproject.blogger.model.UserLogin;
 import com.springproject.blogger.repository.BlogUserRepository;
 import com.springproject.blogger.service.BlogUserService;
+import com.springproject.blogger.service.JWTService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -16,6 +21,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.naming.AuthenticationException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -27,10 +33,18 @@ public class BlogUserServiceImpl implements UserDetailsService, BlogUserService 
     private final BlogUserRepository blogUserRepo;
 
     @Autowired
+    private final JWTService jwtService;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public BlogUserServiceImpl(BlogUserRepository userRepository, PasswordEncoder passwordEncoder) {
+    @Lazy
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    public BlogUserServiceImpl(BlogUserRepository userRepository, JWTService jwtService, PasswordEncoder passwordEncoder) {
         this.blogUserRepo = userRepository;
+        this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -105,5 +119,17 @@ public class BlogUserServiceImpl implements UserDetailsService, BlogUserService 
         }else{
             throw new NoPermissionException("You don't have permission to delete this user!");
         }
+    }
+
+    @Override
+    public String verifyUserLogin(UserLogin userLogin) {
+        String userName = userLogin.getUserName();
+        String password = userLogin.getPassword();
+        Authentication authentication =
+                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userName,password));
+        if(authentication.isAuthenticated())
+            return jwtService.generateToken(userName);
+        else
+           return "Fail!";
     }
 }

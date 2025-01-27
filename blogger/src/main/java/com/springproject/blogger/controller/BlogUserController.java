@@ -1,6 +1,7 @@
 package com.springproject.blogger.controller;
 
 import com.springproject.blogger.model.BlogUser;
+import com.springproject.blogger.model.UserLogin;
 import com.springproject.blogger.service.impl.BlogUserServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +36,10 @@ public class BlogUserController {
     }
 
     @PostMapping("/login") //User login
-    public String login() {
-        return "Login successful!";
+    public String login(@RequestBody UserLogin userLogin) {
+        String token = blogUserService.verifyUserLogin(userLogin);
+        System.out.println(token);
+        return token;
     }
 
     @GetMapping("/myprofile") //Get current logged user profile
