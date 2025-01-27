@@ -1,5 +1,8 @@
-package com.springproject.blogger.exception;
+package com.springproject.blogger.exception.handler;
 
+import com.springproject.blogger.exception.NoElementFoundException;
+import com.springproject.blogger.exception.NoPermissionException;
+import com.springproject.blogger.exception.RegistrationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
