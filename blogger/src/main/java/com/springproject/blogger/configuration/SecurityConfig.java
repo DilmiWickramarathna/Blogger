@@ -45,10 +45,10 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(registry -> registry
                         .requestMatchers("blogportal/signup","blogportal/login").permitAll() // Allow access without authentication
-                        .anyRequest().authenticated())        // All other requests require authentication
-                .sessionManagement(session -> session                        // Configure session management
+                        .anyRequest().authenticated()) // All other requests require authentication
+                .sessionManagement(session -> session // Configure session management
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .httpBasic(Customizer.withDefaults())         // Optional: Enable HTTP Basic authentication
+                .httpBasic(Customizer.withDefaults()) // Optional: Enable HTTP Basic authentication
                 .build();
     }
 }

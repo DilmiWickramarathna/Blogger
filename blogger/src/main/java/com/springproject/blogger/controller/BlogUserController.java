@@ -27,19 +27,19 @@ public class BlogUserController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @PostMapping("/signup")
+    @PostMapping("/signup") //New user registration
     public ResponseEntity<String> addBlogUser(@RequestBody @Valid BlogUser blogUser)
     {
         blogUserService.addNewBlogUser(blogUser);
         return new ResponseEntity<>("New User Added!", HttpStatus.OK);
     }
 
-    @PostMapping("/login")
+    @PostMapping("/login") //User login
     public String login() {
         return "Login successful!";
     }
 
-    @GetMapping("/myprofile")
+    @GetMapping("/myprofile") //Get current logged user profile
     public ResponseEntity<Optional<BlogUser>> getMyProfile(){
         Optional<BlogUser> myProfile = blogUserService.getMyProfileDetails();
         if(!myProfile.isEmpty()){
@@ -50,7 +50,7 @@ public class BlogUserController {
 
     }
 
-    @GetMapping("/blogusers")
+    @GetMapping("/blogusers") //Get all the existing user list
     public ResponseEntity<List<BlogUser>> getAllUsers() {
         List<BlogUser> blogUserList = blogUserService.getBlogUserList();
         if(blogUserList != null){
@@ -61,13 +61,13 @@ public class BlogUserController {
 
     }
 
-    @DeleteMapping("/deleteuser/{blogUserID}")
+    @DeleteMapping("/deleteuser/{blogUserID}") //Delete an existing user
     public ResponseEntity<String> deleteBlogUser(@PathVariable int blogUserID) {
         blogUserService.deleteBlog(blogUserID);
         return new ResponseEntity<>("User Deleted Successfully!", HttpStatus.OK);
     }
 
-    @GetMapping("bloguser/{blogUserID}")
+    @GetMapping("bloguser/{blogUserID}") //Get user by id
     public ResponseEntity<BlogUser> getBlogUserDetailsByID(@PathVariable int blogUserID){
         BlogUser userDetails = blogUserService.getBlogUserByID(blogUserID);
         if(userDetails != null) {
